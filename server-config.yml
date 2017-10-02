@@ -1,0 +1,85 @@
+---
+- name: btcd/lnd server config
+  hosts: 
+    - tag_Name_btcnode
+  remote_user: ubuntu
+
+  vars:
+    home_dir: /home/ubuntu
+
+  tasks:
+    - name: create btcd and btcwallet dir
+      command: >
+        mkdir -p {{ item }}
+      with_items:
+        - "{{ home_dir }}/.btcd/data"
+        - "{{ home_dir }}/.btcwallet"
+        - "{{ home_dir }}/.btcctl"
+        - "{{ home_dir }}/.lnd"
+      tags:
+        - config
+
+    - name: create dir for lnd deamon
+      become: true
+      file: path={{ item }} state=directory owner=ubuntu
+      with_items:
+        - "{{ home_dir }}/lndtest/alice"
+        - "{{ home_dir }}/lndtest/bob"
+        - "{{ home_dir }}/lndtest/charlie"
+      tags:
+        - config
+
+    - name: bashrc
+      copy: >
+        dest={{ home_dir }}/.bashrc
+        src=./files/bashrc
+      tags:
+        - config
+
+    - name: btcd.conf
+      copy: >
+        dest={{ home_dir }}/.btcd/btcd.conf
+        src=./files/btcd.conf
+      tags:
+        - config
+
+    - name: btcwallet.conf
+      copy: >
+        dest={{ home_dir }}/.btcwallet/btcwallet.conf
+        src=./files/btcwallet.conf
+      tags:
+        - config
+
+    - name: btcctl.conf
+      copy: >
+        dest={{ home_dir }}/.btcctl/btcctl.conf
+        src=./files/btcctl.conf
+      tags:
+        - config
+
+    - name: lnd.conf
+      copy: >
+        dest={{ home_dir }}/.lnd/lnd.conf
+        src=./files/lnd.conf
+      tags:
+        - config
+
+    - name: copy supervisor settings
+      become: true
+      template: >
+        dest=/etc/supervisor/conf.d/{{ item }}
+        src=./files/supervisor/{{ item }}
+      with_items:
+        - btcd.conf
+        - btcwallet.conf
+      tags:
+        - config
+
+    - name: restart service
+      become: true
+      shell: >
+        service supervisor restart
+      args:
+        executable: /bin/bash
+      tags:
+        - restart

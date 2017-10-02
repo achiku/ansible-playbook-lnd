@@ -1,0 +1,129 @@
+---
+- name: btcd/lnd server provisioning 
+  hosts: 
+    - tag_Name_btcnode
+  remote_user: ubuntu
+
+  vars:
+    home_dir: /home/ubuntu
+    golang_dir: "{{ home_dir }}/go"
+
+  tasks:
+    - name: add apt repositry for go1.8
+      become: true
+      apt_repository: repo='ppa:gophers/archive' state=present
+      tags:
+        - go
+ 
+    - name: install go1.8
+      become: true
+      apt:
+        name: golang-1.8-go
+        state: present
+      tags:
+        - go
+ 
+    - name: setup for node
+      become: true
+      shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+      args:
+        creates: "/usr/bin/node"
+      tags:
+        - node
+
+    - name: install nodejs
+      become: true
+      apt:
+        name: nodejs
+        state: present
+      tags:
+        - node
+
+    - name: link go
+      become: true
+      file:
+        src: "/usr/lib/go-1.8/bin/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        state: link
+      with_items:
+        - go
+        - gofmt
+      tags:
+        - go
+
+    - name: install git
+      become: true
+      apt:
+        name: git
+        state: present
+      tags:
+        - go
+
+    - name: install supervisor
+      become: true
+      apt:
+        name: supervisor
+        state: present
+      tags:
+        - supervisor
+
+    - name: create golang dir
+      file: path={{ golang_dir }} state=directory
+      tags:
+        - go
+
+    - name: security upgrade
+      become: true
+      command: unattended-upgrades
+      tags:
+        - security
+
+    - name: install glide
+      shell: go get -u github.com/Masterminds/glide
+      tags:
+        - btc
+
+    - name: download sources
+      shell: >
+        git clone git@github.com:{{ item }}.git {{ golang_dir }}/src/github.com/{{ item }}
+      args:
+        creates: "{{ golang_dir }}/src/github.com/{{ item }}"
+      with_items:
+        - btcsuite/btcd
+        - btcsuite/btcwallet
+        - lightningnetwork/lnd
+      tags:
+        - btc
+
+    - name: install node/wallet/lnd
+      shell: >
+          cd {{ golang_dir }}/src/github.com/{{ item }} && \
+          {{ golang_dir }}/bin/glide install && \
+          go install . ./cmd/...
+      with_items:
+        - btcsuite/btcd
+        - btcsuite/btcwallet
+        - lightningnetwork/lnd
+      tags:
+        - btc
+
+    - name: install lncli web
+      shell: git clone https://github.com/mably/lncli-web
+      args:
+        creates: "{{ home_dir }}/lncli-web"
+      tags:
+        - node
+
+    - name: reboot to reflect all changes
+      become: true
+      command: /sbin/shutdown -r now
+      async: 0
+      poll: 0
+      ignore_errors: true
+      tags:
+        - reboot
+
+    - name: wait for os to shut down
+      local_action: wait_for host={{ inventory_hostname }} port=22 delay=10 state=stopped
+      tags:
+        - reboot
