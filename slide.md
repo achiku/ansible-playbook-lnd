@@ -1,4 +1,4 @@
-# 動かして学ぶFull Node + Wallet + Lightning Network
+# 動かして学ぶFull Node + Wallet + Payment Channel
 
 
 ### achiku
@@ -17,10 +17,13 @@
 ### lightning network
 
 - レイヤー2の価値移動方法
-- ブロックチェーンの仕組みの上に立てる
 - オフチェーン(ブロックチェーンへの記載を遅らせて)価値移動
 - 細かい単位でもconfを待たずに支払える
-- ハブみたいなのはできるけどだいたい分散してる
+- 上記までがpayment channel/bi-directionaly payment channel
+- bi-directional payment channelをネットワーク化してみんなが使えるようにしたもの
+    * lightning network
+    * BOLTという仕様があり大体できあがってて大量ノードでの実験等もはじまってる
+    * 完全な分散じゃなくハブみたいなのはできるけどだいたい分散してる
 
 
 ### lightning networkの概要
