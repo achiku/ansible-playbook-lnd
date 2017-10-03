@@ -8,9 +8,9 @@
 
 ### 質問
 
-- Full Node本番運用した事があるという人
+- Full Nodeをmainnet運用した事があるという人
 - Full Nodeをtestnetで運用した事があるという人
-- SPV/Lightweight Nodeを運用した事があるという人
+- SPV/Lightweight Clientを運用した事があるという人
 - 秘密鍵管理するリアルなwallet持ってる人
 
 
