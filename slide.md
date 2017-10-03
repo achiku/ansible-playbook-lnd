@@ -32,8 +32,9 @@
 - その代わり最高の資料を載せます
     * https://lightning.network/
     * https://coincheck.com/blog/3984
+    * https://www.slideshare.net/takashimitsuta/payment-channel
     * https://bitcoinmagazine.com/articles/understanding-the-lightning-network-part-building-a-bidirectional-payment-channel-1464710791/
-    * https://bitcoinmagazine.com/articles/understanding-the-lightning-network-part-creating-the-network-1465326903https://bitcoinmagazine.com/articles/understanding-the-lightning-network-part-creating-the-network-1465326903//
+    * https://bitcoinmagazine.com/articles/understanding-the-lightning-network-part-creating-the-network-1465326903
 
 
 
