@@ -31,6 +31,7 @@
 - 今回動かす事と構成に焦点を置くためあまり立ち入った説明をしません
 - その代わり最高の資料を載せます
     * https://lightning.network/
+    * https://www.slideshare.net/mosa_siru/payment-channel-introduction
     * https://coincheck.com/blog/3984
     * https://www.slideshare.net/takashimitsuta/payment-channel
     * https://bitcoinmagazine.com/articles/understanding-the-lightning-network-part-building-a-bidirectional-payment-channel-1464710791/
@@ -142,14 +143,20 @@ msqABzDytH4hfsmb5ywRozEEStTfFCatSC
 
 ```
 -- alice
+-- 別のシェル立ち上げて
+cd /home/ubuntu/lndtest/alice/
 lnd --rpcport=10001 --peerport=10011 --restport=8001 --datadir=test_data --logdir=test_log --debuglevel=info \
   --no-macaroons --bitcoin.testnet  --bitcoin.active
 
 -- bob
+-- 別のシェル立ち上げて
+cd /home/ubuntu/lndtest/bob/
 lnd --rpcport=10002 --peerport=10012 --restport=8002 --datadir=test_data --logdir=test_log --debuglevel=info \
   --no-macaroons --bitcoin.testnet --bitcoin.active
 
 -- charlie
+-- 別のシェル立ち上げて
+cd /home/ubuntu/lndtest/bob/
 lnd --rpcport=10003 --peerport=10013 --restport=8003 --datadir=test_data --logdir=test_log --debuglevel=info \
   --no-macaroons --bitcoin.testnet --bitcoin.active
 ```
@@ -210,6 +217,8 @@ $ lncli-charlie getinfo
 ### LN (create network)
 
 ```
+lncli-charlie connect 02d0f890097011f21988d324727cf70c49c0a808283c68ca34ab2f0433a495852f@localhost:10012
+
 $ lncli-alice connect 02d0f890097011f21988d324727cf70c49c0a808283c68ca34ab2f0433a495852f@localhost:10012
 {
     "peer_id": 0
@@ -258,6 +267,9 @@ $ lncli-alice walletbalance
 {
     "balance": "50000000"
 }
+
+
+lncli-charlie openchannel --node_key=02d0f890097011f21988d324727cf70c49c0a808283c68ca34ab2f0433a495852f --local_amt=10000
 
 -- このタイミングでTXがネットワークに放出される
 $ lncli-alice openchannel --node_key=02d0f890097011f21988d324727cf70c49c0a808283c68ca34ab2f0433a495852f --local_amt=5000000
