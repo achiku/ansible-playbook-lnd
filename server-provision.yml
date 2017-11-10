@@ -85,7 +85,7 @@
 
     - name: download sources
       shell: >
-        git clone git@github.com:{{ item }}.git {{ golang_dir }}/src/github.com/{{ item }}
+        git clone https://github.com/{{ item }}.git {{ golang_dir }}/src/github.com/{{ item }}
       args:
         creates: "{{ golang_dir }}/src/github.com/{{ item }}"
       with_items:
@@ -108,7 +108,7 @@
         - btc
 
     - name: install lncli web
-      shell: git clone https://github.com/mably/lncli-web
+      shell: git clone https://github.com/mably/lncli-web.git
       args:
         creates: "{{ home_dir }}/lncli-web"
       tags:

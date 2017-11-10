@@ -14,7 +14,7 @@
         region: "{{ region }}"
         vpc_subnet_id: "{{ subnet }}"
         volumes:
-          - device_name: /dev/xvda
+          - device_name: /dev/sda1
             volume_type: gp2
             volume_size: 250
         instance_type: c4.large
