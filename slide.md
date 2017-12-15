@@ -48,6 +48,7 @@
 - gRPC対応してる
 - 企業のバックは一応ついているが一社のみ
     * coinbaseのエンジニアもコントリビュートしてるので内部では使われてる？
+    * なんか最近メインっぽい開発者達がのきなみdecredに行ってるっぽい
 - Bitcoin Core (bitcoind)との差
     * 全ノードの7割はBitcoin Core (bitcoind)
     * walletの機能は分離されている
@@ -62,6 +63,7 @@
 - gRPC対応してる
 - 企業のバックは一応ついているが一社のみ
     * coinbaseのエンジニアもコントリビュートしてるので内部では使われてる？
+    * なんか最近メインっぽい開発者達がのきなみdecredに行ってるっぽい
 - SPV対応のissueも存在している
     * forkしてSPVになってるものもある
     * openbazarrのwalletはbtcwalletのfork
